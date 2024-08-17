@@ -6,7 +6,7 @@ class AppColors {
   static Color secondaryColor = HexColor('407E9E');
   static Color thirdColor = HexColor('9CBFC9');
   static Color snowWhite = HexColor('F1FAEE');
-  static Color white = HexColor('ffffff');
+  static Color white = HexColor('FFFFFF');
   static Color black = HexColor('000000');
   static Color grey = HexColor('9CBFC9');
   static Color grey2 = HexColor('d9d9d9').withOpacity(.5);

@@ -1,8 +1,10 @@
 import 'package:clinbook/constants/app_colors.dart';
+import 'package:clinbook/core/shared_widgets/app_bars/root_app_bar.dart';
 import 'package:clinbook/core/shared_widgets/custom_text.dart';
 import 'package:clinbook/core/shared_widgets/sized_boxes/horizontal_sizedbox.dart';
 import 'package:clinbook/core/shared_widgets/sized_boxes/vertical_sizedbox.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DoctorHomeScreen extends StatelessWidget {
   const DoctorHomeScreen({super.key});
@@ -19,20 +21,7 @@ class DoctorHomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.mainColor),
-                      ),
-                      CustomText(
-                          text: 'ClinBook',
-                          textStyle: TextStyle(color: AppColors.thirdColor)),
-                    ],
-                  ),
+                  RootAppBar(),
                   const VerticalSizedBox(20),
                   Row(
                     children: [
@@ -43,14 +32,27 @@ class DoctorHomeScreen extends StatelessWidget {
                         text: "مواعيد سابقة",
                         textStyle:
                             TextStyle(color: AppColors.mainColor, fontSize: 24),
-                      )
+                      ),
+                      const Spacer(),
+                      Container(
+                          height: 40,
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: AppColors.grey2,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: AppColors.mainColor)),
+                          child: Center(
+                              child: CustomText(
+                            text: "أوقات الدوام",
+                            textStyle: TextStyle(color: AppColors.mainColor),
+                          )))
                     ],
                   ),
                   const VerticalSizedBox(20),
                   CustomText(
                       text: 'قائمة المواعيد',
-                      textStyle:
-                          TextStyle(color: AppColors.thirdColor, fontSize: 20)),
+                      textStyle: TextStyle(
+                          color: AppColors.secondaryColor, fontSize: 20)),
                   const VerticalSizedBox(20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -72,7 +74,8 @@ class DoctorHomeScreen extends StatelessWidget {
                               child: Center(
                                   child: CustomText(
                                 text: "12/12/2024",
-                                textStyle: TextStyle(color: AppColors.grey),
+                                textStyle:
+                                    TextStyle(color: AppColors.secondaryColor),
                               )))
                         ],
                       ),
@@ -93,7 +96,8 @@ class DoctorHomeScreen extends StatelessWidget {
                               child: Center(
                                   child: CustomText(
                                 text: "12/12/2024",
-                                textStyle: TextStyle(color: AppColors.grey),
+                                textStyle:
+                                    TextStyle(color: AppColors.secondaryColor),
                               )))
                         ],
                       ),
@@ -114,7 +118,8 @@ class DoctorHomeScreen extends StatelessWidget {
                               child: Center(
                                   child: CustomText(
                                 text: "12/12/2024",
-                                textStyle: TextStyle(color: AppColors.grey),
+                                textStyle:
+                                    TextStyle(color: AppColors.secondaryColor),
                               )))
                         ],
                       ),
@@ -147,11 +152,11 @@ class DoctorHomeScreen extends StatelessWidget {
                                     children: [
                                       CustomText(
                                         text: "8:00",
-                                        textStyle: TextStyle(),
+                                        textStyle: const TextStyle(),
                                       ),
                                       CustomText(
                                         text: "8:00",
-                                        textStyle: TextStyle(),
+                                        textStyle: const TextStyle(),
                                       ),
                                     ],
                                   ),
@@ -161,7 +166,7 @@ class DoctorHomeScreen extends StatelessWidget {
                                     width: 1,
                                     color: AppColors.mainColor,
                                   ),
-                                  HorizantalSizedBox(5),
+                                  const HorizantalSizedBox(5),
                                   Icon(Icons.add, color: AppColors.mainColor)
                                 ]),
                           ),

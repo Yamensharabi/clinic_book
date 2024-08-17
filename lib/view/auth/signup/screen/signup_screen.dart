@@ -22,7 +22,12 @@ class SignupScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         body: Column(children: [
           const CustomAppBar(text: 'إنشاء حساب'),
-          Stack(
+          CustomText(
+            text: "لنقم بإنشاء حساب جديد",
+            textStyle: context.textTheme.bodyLarge!
+                .copyWith(color: AppColors.secondaryColor),
+          ),
+          /*  Stack(
             children: [
               Container(
                 width: 100,
@@ -46,7 +51,7 @@ class SignupScreen extends StatelessWidget {
                     child: SvgPicture.asset(AppSvgs.cameraIcon),
                   ))
             ],
-          ),
+          ), */
           const VerticalSizedBox(20),
           Expanded(
               child: Container(
@@ -64,7 +69,7 @@ class SignupScreen extends StatelessWidget {
                       topLeft: Radius.circular(80),
                       topRight: Radius.circular(80))),
               child: Padding(
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30),
                 child: ListView(
                   children: [
                     Column(
@@ -74,20 +79,24 @@ class SignupScreen extends StatelessWidget {
                         CustomTextFormField(
                             label: 'البريد الإلكتروني',
                             controller: signupController.emailController,
+                            hintColor: AppColors.white,
                             validator: () {},
                             hintText: 'ادخل البريد الإلكتروني'),
                         CustomTextFormField(
-                            label: 'الاسم الكامل',
+                            label: 'اسم المستخدم',
                             controller: signupController.userNameController,
+                            hintColor: AppColors.white,
                             validator: () {},
                             hintText: 'اسم المستخدم'),
                         CustomTextFormField(
                             label: 'الاسم الأول',
                             controller: signupController.firstNameController,
+                            hintColor: AppColors.white,
                             validator: () {},
                             hintText: 'الاسم الأول'),
                         CustomTextFormField(
                             label: 'العنوان',
+                            hintColor: AppColors.white,
                             validator: () {},
                             hintText: 'ادخل العنوان كامل'),
                         CustomText(
@@ -179,11 +188,13 @@ class SignupScreen extends StatelessWidget {
                         ),
                         CustomTextFormField(
                             label: 'كلمة المرور',
+                            hintColor: AppColors.white,
                             validator: () {},
                             controller: signupController.passwordController,
                             hintText: '**********'),
                         CustomTextFormField(
                             label: 'تأكيد كلمة المرور',
+                            hintColor: AppColors.white,
                             validator: () {},
                             controller:
                                 signupController.confirmPasswordController,

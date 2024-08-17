@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData themeArabic = ThemeData(
+      // appBarTheme: AppBarTheme(backgroundColor: Brightness.light),
       textTheme: TextTheme(
     titleLarge: TextStyle(
       fontWeight: FontWeight.bold,
@@ -10,11 +11,11 @@ class AppTheme {
       color: AppColors.mainColor,
     ),
     titleMedium: TextStyle(
-      fontSize: 18,
+      fontSize: 20,
       color: AppColors.thirdColor,
     ),
     titleSmall: TextStyle(
-      fontSize: 14,
+      fontSize: 18,
       color: AppColors.mainColor,
     ),
     bodyLarge: TextStyle(

@@ -1,47 +1,40 @@
-// ignore_for_file: avoid_print, unnecessary_nullable_for_final_variable_declarations
+// ignore_for_file: avoid_print
 
 import 'dart:convert';
-
-import 'package:clinbook/constants/app_api_links.dart';
 import 'package:clinbook/constants/app_colors.dart';
 import 'package:clinbook/view/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   final Future<SharedPreferences> _pref = SharedPreferences.getInstance();
 
   Future<void> login() async {
     print("start");
 
     try {
-      var headers = {'Content-Type': 'application/json'};
-      print("Headers: $headers");
       var url = Uri.parse("https://154.12.230.8:901/api/Auth/login");
       print("URL: $url");
-      Map<String, String> body = {
-        'UserName': userNameController.text,
-        'Password': passwordController.text,
-      };
-      print("Body: $body");
-      print("UserName: ${userNameController.text}");
-      print("Password: ${passwordController.text}");
-      String jsonBody = jsonEncode(body);
 
-      http.Response response = await http.post(
-        url,
-        body: jsonBody,
-      );
+      // استخدام MultipartRequest لإرسال البيانات كـ form-data
+      var request = http.MultipartRequest('POST', url);
+      request.fields['UserName'] = userNameController.text;
+      request.fields['Password'] = passwordController.text;
+
+      print("Fields: ${request.fields}");
+
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+
       print("Response status code: ${response.statusCode}");
-      print("Response body: ${response.body}");
+      print("Response body: $responseBody");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final json = jsonDecode(response.body);
+        final json = jsonDecode(responseBody);
         print(json);
         if (json['status'] == 'Success') {
           var token = json['data']['token'];
@@ -56,7 +49,7 @@ class LoginController extends GetxController {
           throw Exception('Login failed');
         }
       } else {
-        throw Exception('Failed to login: ${response.body}');
+        throw Exception('Failed to login: $responseBody');
       }
     } catch (e) {
       print("Error: $e");
@@ -64,17 +57,18 @@ class LoginController extends GetxController {
         context: Get.context!,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: AppColors.white,
             title: Text("خطأ !", style: context.textTheme.titleLarge),
             content: Text(
-              'رجاء ادخل رقم الهاتف وكلمة السر بشكل صحيح',
-              style: context.textTheme.titleMedium,
+              'يرجى إدخال البريد الإلكتروني وكلمة المرور بشكل صحيح',
+              style: context.textTheme.bodyMedium,
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: Text('OK',
                     style: context.textTheme.titleMedium!
-                        .copyWith(color: AppColors.secondaryColor)),
+                        .copyWith(color: AppColors.mainColor)),
               ),
             ],
           );

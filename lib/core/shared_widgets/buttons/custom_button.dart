@@ -15,9 +15,12 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
       height: 50.h,
+      decoration: BoxDecoration(
+          color: backgroundColor ?? AppColors.mainColor,
+          borderRadius: BorderRadius.circular(16)),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor ?? AppColors.mainColor,

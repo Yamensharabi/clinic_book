@@ -29,7 +29,7 @@ class WorkHoursController extends GetxController {
   void fetchWorkHours() async {
     final response = await http.get(
       Uri.parse(
-          'https://154.12.230.8:901/api/clinic/workhours/b747e76f-c952-4610-95fa-68a13bcc2f08'),
+          'https://154.12.230.8:901/api/clinic/b747e76f-c952-4610-95fa-68a13bcc2f08/workhours'),
       headers: {
         'Authorization':
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJkb2N0b3IyQGNsaW5pYy5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc5ZWU3NDk4LTc1MzgtNDdjMS04NzlmLTQxOGQ2MDI3OTFjNSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJHZXREb2N0b3JQYXRpZW50cyIsIkdldERvY3RvckFwcG9pbnRtZW50cyIsIkdldENsaW5pY1dvcmtIb3VycyIsIkRvY3RvciIsIkFkZERvY3RvclBhdGllbnQiLCJVcGRhdGVXb3JrSG91cnMiXSwiZXhwIjoxNzI1Mjk2MjgyLCJpc3MiOiJodHRwczovLzE1NC4xMi4yMzAuODo5MDEiLCJhdWQiOiJodHRwczovLzE1NC4xMi4yMzAuODo5MDEifQ.2eduHvp-0MivIEIW1GvMyMvcOHEhtOF1hZnvMzxw_Do'
@@ -48,7 +48,8 @@ class WorkHoursController extends GetxController {
 
   void updateWorkHours(String day, int startMinute, int endMinute) async {
     final response = await http.post(
-      Uri.parse('https://154.12.230.8:901/api/clinic/workhours'),
+      Uri.parse(
+          'https://154.12.230.8:901/api/clinic/b747e76f-c952-4610-95fa-68a13bcc2f08/workhours'),
       headers: {
         'Authorization':
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJkb2N0b3IyQGNsaW5pYy5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc5ZWU3NDk4LTc1MzgtNDdjMS04NzlmLTQxOGQ2MDI3OTFjNSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJHZXREb2N0b3JQYXRpZW50cyIsIkdldERvY3RvckFwcG9pbnRtZW50cyIsIkdldENsaW5pY1dvcmtIb3VycyIsIkRvY3RvciIsIkFkZERvY3RvclBhdGllbnQiLCJVcGRhdGVXb3JrSG91cnMiXSwiZXhwIjoxNzI1Mjk2MjgyLCJpc3MiOiJodHRwczovLzE1NC4xMi4yMzAuODo5MDEiLCJhdWQiOiJodHRwczovLzE1NC4xMi4yMzAuODo5MDEifQ.2eduHvp-0MivIEIW1GvMyMvcOHEhtOF1hZnvMzxw_Do',
@@ -61,7 +62,7 @@ class WorkHoursController extends GetxController {
       }),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       fetchWorkHours(); // Refresh the list after updating
     } else {
       // Handle error
@@ -83,7 +84,8 @@ class WorkHoursController extends GetxController {
         .toList();
 
     final response = await http.post(
-      Uri.parse('https://154.12.230.8:901/api/clinic/workhours'),
+      Uri.parse(
+          'https://154.12.230.8:901/api/clinic/b747e76f-c952-4610-95fa-68a13bcc2f08/workhours'),
       headers: {
         'Authorization':
             'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJkb2N0b3IyQGNsaW5pYy5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc5ZWU3NDk4LTc1MzgtNDdjMS04NzlmLTQxOGQ2MDI3OTFjNSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJHZXREb2N0b3JQYXRpZW50cyIsIkdldERvY3RvckFwcG9pbnRtZW50cyIsIkdldENsaW5pY1dvcmtIb3VycyIsIkRvY3RvciIsIkFkZERvY3RvclBhdGllbnQiLCJVcGRhdGVXb3JrSG91cnMiXSwiZXhwIjoxNzI1Mjk2MjgyLCJpc3MiOiJodHRwczovLzE1NC4xMi4yMzAuODo5MDEiLCJhdWQiOiJodHRwczovLzE1NC4xMi4yMzAuODo5MDEifQ.2eduHvp-0MivIEIW1GvMyMvcOHEhtOF1hZnvMzxw_Do',
@@ -91,7 +93,7 @@ class WorkHoursController extends GetxController {
       },
       body: json.encode({
         'workHours': data,
-        'ClinicId': 'b747e76f-c952-4610-95fa-68a13bcc2f08',
+        //  'ClinicId': 'b747e76f-c952-4610-95fa-68a13bcc2f08',
       }),
     );
 

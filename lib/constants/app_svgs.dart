@@ -6,4 +6,8 @@ class AppSvgs {
   static const cameraDialog = '${root}camera_dialog.svg';
   static const galleryIcon = '${root}gallery_icon.svg';
   static const person = '${root}person.svg';
+  static const appointemnts = '${root}appointments.svg';
+  static const home = '${root}home.svg';
+  static const person_call = '${root}person_call.svg';
+  static const settings = '${root}settings.svg';
 }

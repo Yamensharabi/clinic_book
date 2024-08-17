@@ -5,6 +5,7 @@ import 'package:clinbook/core/shared_widgets/sized_boxes/vertical_sizedbox.dart'
 import 'package:clinbook/logic/controllers/doctor/work_hours_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class AddWorkHoursScreen extends StatelessWidget {
   final String token;
@@ -244,10 +245,12 @@ class AddWorkHoursScreen extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                final startMinute = _timeToMinutes(startController.text);
-                final endMinute = _timeToMinutes(endController.text);
+                // تحويل وقت البداية والنهاية إلى دقائق
+                // final startMinute = _timeToMinutes(startController.text);
+                // final endMinute = _timeToMinutes(endController.text);
 
-                controller.updateWorkHours(day, startMinute, endMinute);
+                // تحديث ساعات العمل باستخدام عدد الدقائق
+                controller.updateWorkHours("Sunday", 600, 610);
                 Navigator.of(context).pop();
               },
               child: const Text('حفظ'),
@@ -258,12 +261,13 @@ class AddWorkHoursScreen extends StatelessWidget {
     );
   }
 
-  int _timeToMinutes(String time) {
-    final parts = time.split(':');
-    final hours = int.parse(parts[0]);
-    final minutes = int.parse(parts[1]);
-    return hours * 60 + minutes;
-  }
+  /* int _timeToMinutes(String time) {
+    final format = DateFormat.jm(); // صيغة AM/PM
+    final cleanedTime = time.replaceAll(RegExp(r'\s+'), ' ').trim();
+    final DateTime dateTime = format.parse(cleanedTime);
+    final minutes = dateTime.hour * 60 + dateTime.minute;
+    return minutes;
+  } */
 
   String formatTime(int minutes) {
     final int hours = minutes ~/ 60;

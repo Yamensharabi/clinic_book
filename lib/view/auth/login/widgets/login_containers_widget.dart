@@ -43,6 +43,8 @@ class LoginContainersWidget extends StatelessWidget {
                   CustomTextFormField(
                     label: "البريد الإلكتروني",
                     validator: () {},
+                    labelColor: AppColors.grey,
+                    hintColor: AppColors.white,
                     controller: loginController.userNameController,
                     hintText: 'Email',
                   ),
@@ -50,6 +52,8 @@ class LoginContainersWidget extends StatelessWidget {
                     label: "كلمة المرور",
                     validator: () {},
                     controller: loginController.passwordController,
+                    labelColor: AppColors.grey,
+                    hintColor: AppColors.white,
                     hintText: 'كلمة المرور',
                     obscure: true,
                   ),
@@ -68,8 +72,6 @@ class LoginContainersWidget extends StatelessWidget {
                   )
                 ],
               ),
-
-              //   LoginButtonsWidgets()
 
               Column(
                 children: [

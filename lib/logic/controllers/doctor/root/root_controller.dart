@@ -15,7 +15,7 @@ class RootController extends GetxController {
     const ShowSecertariesScreen(),
     const LanguageScreen(),
     const Text(''),
-    const PatientsScreen(),
+    PatientsScreen(),
     const HomeScreen(),
   ];
 
