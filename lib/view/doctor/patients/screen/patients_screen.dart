@@ -4,6 +4,7 @@ import 'package:clinbook/core/shared_widgets/sized_boxes/horizontal_sizedbox.dar
 import 'package:clinbook/core/shared_widgets/sized_boxes/vertical_sizedbox.dart';
 import 'package:clinbook/logic/controllers/doctor/patient_controller.dart';
 import 'package:clinbook/view/doctor/home/screen/add_patient_screen.dart';
+import 'package:clinbook/view/doctor/patients/screen/patient_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -81,58 +82,64 @@ class PatientsScreen extends StatelessWidget {
                       itemCount: controller.patientsList.length,
                       itemBuilder: (context, index) {
                         final patient = controller.patientsList[index];
-                        return Container(
-                          margin: const EdgeInsets.only(bottom: 10),
-                          height: 60,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: AppColors.grey2,
-                              borderRadius: BorderRadius.circular(16)),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CustomText(
-                                  text: patient.fullName.isNotEmpty
-                                      ? patient.fullName
-                                      : "No Name",
-                                  textStyle: TextStyle(
-                                      color: AppColors.secondaryColor),
-                                ),
-                                const VerticalSizedBox(4),
-                                Row(
-                                  children: [
-                                    CustomText(
-                                      text: patient.birthDate!.isNotEmpty
-                                          ? "${patient.birthDate} عام"
-                                          : "",
-                                    ),
-                                    const HorizantalSizedBox(5),
-                                    CustomText(
-                                      text: patient.patientWeight!.isNotEmpty
-                                          ? "${patient.patientWeight} KG"
-                                          : "",
-                                    ),
-                                    const HorizantalSizedBox(5),
-                                    CustomText(
-                                      text: patient.patientTall!.isNotEmpty
-                                          ? "${patient.patientTall} CM"
-                                          : "",
-                                    ),
-                                    const HorizantalSizedBox(5),
-                                    CustomText(
-                                      text: patient.gender!.isNotEmpty
-                                          ? (patient.gender == "male"
-                                              ? "ذكر"
-                                              : "أنثى")
-                                          : "",
-                                    ),
-                                  ],
-                                ),
-                              ],
+                        return InkWell(
+                          onTap: () {
+                            Get.to(() =>
+                                PatientDetailScreen(patientId: patient.id));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            height: 60,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: AppColors.grey2,
+                                borderRadius: BorderRadius.circular(16)),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustomText(
+                                    text: patient.fullName.isNotEmpty
+                                        ? patient.fullName
+                                        : "No Name",
+                                    textStyle: TextStyle(
+                                        color: AppColors.secondaryColor),
+                                  ),
+                                  const VerticalSizedBox(4),
+                                  Row(
+                                    children: [
+                                      CustomText(
+                                        text: patient.birthDate!.isNotEmpty
+                                            ? "${patient.birthDate} عام"
+                                            : "",
+                                      ),
+                                      const HorizantalSizedBox(5),
+                                      CustomText(
+                                        text: patient.patientWeight!.isNotEmpty
+                                            ? "${patient.patientWeight} KG"
+                                            : "",
+                                      ),
+                                      const HorizantalSizedBox(5),
+                                      CustomText(
+                                        text: patient.patientTall!.isNotEmpty
+                                            ? "${patient.patientTall} CM"
+                                            : "",
+                                      ),
+                                      const HorizantalSizedBox(5),
+                                      CustomText(
+                                        text: patient.gender!.isNotEmpty
+                                            ? (patient.gender == "male"
+                                                ? "ذكر"
+                                                : "أنثى")
+                                            : "",
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         );

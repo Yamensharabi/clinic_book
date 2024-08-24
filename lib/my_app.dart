@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
               locale: controller.language,
               theme: AppTheme.themeArabic,
               debugShowCheckedModeBanner: false,
-              home: SignupScreen(
-                  //  token: token,
-                  ),
+              home: AddWorkHoursScreen(
+                token: token,
+              ),
               //initialBinding: RootBinding(),
               // initialRoute: AppRoutes.rootScreen,
             ));

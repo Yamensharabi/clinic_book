@@ -46,27 +46,33 @@ class WorkHoursController extends GetxController {
     isLoading.value = false;
   }
 
-  void updateWorkHours(String day, int startMinute, int endMinute) async {
-    final response = await http.post(
-      Uri.parse(
-          'https://154.12.230.8:901/api/clinic/b747e76f-c952-4610-95fa-68a13bcc2f08/workhours'),
-      headers: {
-        'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJkb2N0b3IyQGNsaW5pYy5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc5ZWU3NDk4LTc1MzgtNDdjMS04NzlmLTQxOGQ2MDI3OTFjNSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJHZXREb2N0b3JQYXRpZW50cyIsIkdldERvY3RvckFwcG9pbnRtZW50cyIsIkdldENsaW5pY1dvcmtIb3VycyIsIkRvY3RvciIsIkFkZERvY3RvclBhdGllbnQiLCJVcGRhdGVXb3JrSG91cnMiXSwiZXhwIjoxNzI1Mjk2MjgyLCJpc3MiOiJodHRwczovLzE1NC4xMi4yMzAuODo5MDEiLCJhdWQiOiJodHRwczovLzE1NC4xMi4yMzAuODo5MDEifQ.2eduHvp-0MivIEIW1GvMyMvcOHEhtOF1hZnvMzxw_Do',
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({
-        'day': day,
-        'startMinute': startMinute,
-        'endMinute': endMinute,
-      }),
-    );
+  void updateWorkHours(String day, int startMinute, int endMinute,
+      int expectedDurationInMinutes) {
+    final workHoursIndex =
+        workHours.indexWhere((element) => element.day == day);
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      fetchWorkHours(); // Refresh the list after updating
+    if (workHoursIndex != -1) {
+      // تحديث ساعات العمل
+      workHours[workHoursIndex].workStages[0].startMinute = startMinute;
+      workHours[workHoursIndex].workStages[0].endMinute = endMinute;
+      workHours[workHoursIndex].workStages[0].expectedDurationInMinutes =
+          expectedDurationInMinutes;
     } else {
-      // Handle error
+      // إضافة ساعات العمل الجديدة
+      workHours.add(WorkHours(
+        day: day,
+        workStages: [
+          WorkStage(
+            startMinute: startMinute,
+            endMinute: endMinute,
+            expectedDurationInMinutes: expectedDurationInMinutes,
+          ),
+        ],
+      ));
     }
+
+    // لتحديث الشاشة بعد التعديل
+    workHours.refresh();
   }
 
   void saveAllWorkHours(int expectedDurationInMinutes) async {

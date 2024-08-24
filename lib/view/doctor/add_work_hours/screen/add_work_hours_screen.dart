@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:clinbook/constants/app_colors.dart';
 import 'package:clinbook/core/shared_widgets/custom_text.dart';
 import 'package:clinbook/core/shared_widgets/sized_boxes/horizontal_sizedbox.dart';
 import 'package:clinbook/core/shared_widgets/sized_boxes/vertical_sizedbox.dart';
 import 'package:clinbook/logic/controllers/doctor/work_hours_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class AddWorkHoursScreen extends StatelessWidget {
   final String token;
@@ -14,7 +14,6 @@ class AddWorkHoursScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final WorkHoursController controller = Get.put(WorkHoursController(token));
-    final durationController = TextEditingController();
 
     return Scaffold(
         backgroundColor: AppColors.white,
@@ -57,9 +56,6 @@ class AddWorkHoursScreen extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        print('*******${controller.allDays}');
-                        print('*******${controller.workHours}');
-                        print('*******');
                         var day = controller.allDays[index];
                         bool hasWorkHours = controller.workHours
                             .any((workHour) => workHour.day == day);
@@ -88,18 +84,11 @@ class AddWorkHoursScreen extends StatelessWidget {
                           ],
                         );
                       }),
-                  TextField(
-                    controller: durationController,
-                    decoration: const InputDecoration(
-                        labelText: 'مدة الجلسة المتوقعة (دقائق)'),
-                    keyboardType: TextInputType.number,
-                  ),
                   const VerticalSizedBox(20),
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        controller.saveAllWorkHours(
-                            int.parse(durationController.text));
+                        //    controller.saveAllWorkHours();
                       },
                       child: const Text('حفظ'),
                     ),
@@ -195,10 +184,13 @@ class AddWorkHoursScreen extends StatelessWidget {
       builder: (context) {
         final startController = TextEditingController();
         final endController = TextEditingController();
+        final durationController = TextEditingController();
 
         if (workStage != null) {
           startController.text = formatTime(workStage.startMinute);
           endController.text = formatTime(workStage.endMinute);
+          durationController.text =
+              workStage.expectedDurationInMinutes.toString();
         }
 
         return AlertDialog(
@@ -208,6 +200,7 @@ class AddWorkHoursScreen extends StatelessWidget {
             children: [
               TextField(
                 controller: startController,
+                style: TextStyle(color: AppColors.mainColor),
                 decoration: const InputDecoration(labelText: 'وقت البداية'),
                 readOnly: true,
                 onTap: () async {
@@ -222,7 +215,10 @@ class AddWorkHoursScreen extends StatelessWidget {
               ),
               TextField(
                 controller: endController,
-                decoration: const InputDecoration(labelText: 'وقت النهاية'),
+                style: TextStyle(color: AppColors.mainColor),
+                decoration: const InputDecoration(
+                  labelText: 'وقت النهاية',
+                ),
                 readOnly: true,
                 onTap: () async {
                   TimeOfDay? picked = await showTimePicker(
@@ -233,6 +229,14 @@ class AddWorkHoursScreen extends StatelessWidget {
                     endController.text = picked.format(context);
                   }
                 },
+              ),
+              TextField(
+                style: TextStyle(color: AppColors.mainColor),
+                controller: durationController,
+                decoration: const InputDecoration(
+                  labelText: 'مدة الجلسة المتوقعة (دقائق)',
+                ),
+                keyboardType: TextInputType.number,
               ),
             ],
           ),
@@ -246,11 +250,14 @@ class AddWorkHoursScreen extends StatelessWidget {
             TextButton(
               onPressed: () {
                 // تحويل وقت البداية والنهاية إلى دقائق
-                // final startMinute = _timeToMinutes(startController.text);
-                // final endMinute = _timeToMinutes(endController.text);
+                final startMinute = _timeToMinutes(startController.text);
+                final endMinute = _timeToMinutes(endController.text);
+                final expectedDurationInMinutes =
+                    int.tryParse(durationController.text) ?? 0;
 
-                // تحديث ساعات العمل باستخدام عدد الدقائق
-                controller.updateWorkHours("Sunday", 600, 610);
+                // تحديث ساعات العمل باستخدام عدد الدقائق والمدة المتوقعة
+                controller.updateWorkHours(
+                    day, 660, 600, expectedDurationInMinutes);
                 Navigator.of(context).pop();
               },
               child: const Text('حفظ'),
@@ -261,19 +268,34 @@ class AddWorkHoursScreen extends StatelessWidget {
     );
   }
 
-  /* int _timeToMinutes(String time) {
-    final format = DateFormat.jm(); // صيغة AM/PM
-    final cleanedTime = time.replaceAll(RegExp(r'\s+'), ' ').trim();
-    final DateTime dateTime = format.parse(cleanedTime);
-    final minutes = dateTime.hour * 60 + dateTime.minute;
-    return minutes;
-  } */
+  int _timeToMinutes(String time) {
+    try {
+      // صيغة AM/PM باستخدام DateFormat
+      final format = DateFormat.jm();
+
+      // تنظيف النص: إزالة أي رموز غير مرئية أو مسافات غير طبيعية
+      final cleanedTime = time
+          .replaceAll(RegExp(r'[^\x00-\x7F]+'), '') // إزالة أي رموز غير ASCII
+          .trim(); // إزالة المسافات في البداية والنهاية
+
+      // محاولة تحويل النص إلى DateTime باستخدام الصيغة المحددة
+      final DateTime dateTime = format.parse(cleanedTime);
+
+      // حساب عدد الدقائق من بداية اليوم
+      final minutes = dateTime.hour * 60 + dateTime.minute;
+
+      return minutes;
+    } catch (e) {
+      // في حالة وجود خطأ في التنسيق، يمكن عرض رسالة خطأ أو التعامل معها بطريقة أخرى
+      print("Error parsing time: $e");
+      return 0; // إعادة 0 كمثال للتعامل مع الخطأ
+    }
+  }
 
   String formatTime(int minutes) {
     final int hours = minutes ~/ 60;
     final int remainingMinutes = minutes % 60;
-    final String formattedHours = hours.toString().padLeft(2, '0');
-    final String formattedMinutes = remainingMinutes.toString().padLeft(2, '0');
-    return '$formattedHours:$formattedMinutes';
+    final timeOfDay = TimeOfDay(hour: hours, minute: remainingMinutes);
+    return timeOfDay.format(Get.context!);
   }
 }
